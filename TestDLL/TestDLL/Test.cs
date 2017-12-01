@@ -63,6 +63,7 @@ namespace TestDLL
             if (!data.GetType().IsSerializable)
                 throw new ArgumentException("Data is not serializable");
             var formatter = new BinaryFormatter();
+
             using (var fs = new FileStream(indata, FileMode.OpenOrCreate))
             {
                 formatter.Serialize(fs, data);
@@ -71,8 +72,6 @@ namespace TestDLL
 
         public void DeserializeObj(string indata)
         {
-            if (!File.Exists(indata))
-                throw new IOException("File not exist");
             var formatter = new BinaryFormatter();
             using (var fs = new FileStream(indata, FileMode.Open))
             {
