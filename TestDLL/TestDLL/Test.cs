@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace TestDLL
 {
@@ -41,6 +38,17 @@ namespace TestDLL
             }
         }
         
+        public bool GetEmailStatus()
+        {
+            if (data.ToString() == null)
+                throw new ArgumentNullException("Data is null");
+            else
+            {
+                var reg = new Regex("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$");
+                return reg.IsMatch(data.ToString()); 
+            }
+        }
+
         public string PrintMainMetaInfo()
         {
             if (data == null)
