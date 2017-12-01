@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace TestDLL.Tests
@@ -8,6 +9,8 @@ namespace TestDLL.Tests
     [TestClass()]
     public class MainTestDLL
     {
+        public TestContext TestContext { get; set; }
+
         //SetMethod
         [ExpectedException(typeof(ArgumentNullException), "Indata is null")]
         [TestMethod()]
@@ -28,18 +31,22 @@ namespace TestDLL.Tests
 
         //GetIntegerStatus
         [TestMethod()]
+        [DataSource("MyExcelDataSource")]
+        [DeploymentItem("TestDLL.Tests\\DataDrivenSource.xlsx")]
         public void GetIntegerStatus_Success_Test()
         {
-            string indata = "123";                         //TODO Data Import
+            string indata = TestContext.DataRow["CorrectInt"].ToString();
             var instance = new Test<string>();
             instance.Set(indata);
             Assert.IsTrue(instance.GetIntegerStatus());
         }
 
         [TestMethod()]
+        [DataSource("MyExcelDataSource")]
+        [DeploymentItem("TestDLL.Tests\\DataDrivenSource.xlsx")]
         public void GetIntegerStatus_Broken_Test()
         {
-            string indata = "12DF";                         //TODO Data Import
+            string indata = TestContext.DataRow["IncorrectInt"].ToString();
             var instance = new Test<string>();
             instance.Set(indata);
             Assert.IsFalse(instance.GetIntegerStatus());
@@ -47,18 +54,22 @@ namespace TestDLL.Tests
 
         //GetDoubleStatus
         [TestMethod()]
+        [DataSource("MyExcelDataSource")]
+        [DeploymentItem("TestDLL.Tests\\DataDrivenSource.xlsx")]
         public void GetDoubleStatus_Success_Test()
         {
-            string indata = "12,12";                        //TODO Data Import
+            string indata = TestContext.DataRow["CorrectDouble"].ToString();
             var instance = new Test<string>();
             instance.Set(indata);
             Assert.IsTrue(instance.GetDoubleStatus());
         }
 
         [TestMethod()]
+        [DataSource("MyExcelDataSource")]
+        [DeploymentItem("TestDLL.Tests\\DataDrivenSource.xlsx")]
         public void GetDoubleStatus_Broken_Test()
         {
-            string indata = "12.AD12";                        //TODO Data Import
+            string indata = TestContext.DataRow["IncorrectDouble"].ToString();
             var instance = new Test<string>();
             instance.Set(indata);
             Assert.IsFalse(instance.GetDoubleStatus());
@@ -66,18 +77,22 @@ namespace TestDLL.Tests
 
         //GetEmailStatus
         [TestMethod()]
+        [DataSource("MyExcelDataSource")]
+        [DeploymentItem("TestDLL.Tests\\DataDrivenSource.xlsx")]
         public void GetEmailStatus_Success_Test()
         {
-            string indata = "test@mail.ru";                        //TODO Data Import
+            string indata = TestContext.DataRow["CorrectEmail"].ToString();
             var instance = new Test<string>();
             instance.Set(indata);
             Assert.IsTrue(instance.GetEmailStatus());
         }
 
         [TestMethod()]
+        [DataSource("MyExcelDataSource")]
+        [DeploymentItem("TestDLL.Tests\\DataDrivenSource.xlsx")]
         public void GetEmailStatus_Broken_Test()
         {
-            string indata = "test@@mail.@ru";                        //TODO Data Import
+            string indata = TestContext.DataRow["IncorrectEmail"].ToString();
             var instance = new Test<string>();
             instance.Set(indata);
             Assert.IsFalse(instance.GetEmailStatus());
@@ -105,10 +120,12 @@ namespace TestDLL.Tests
         }
 
         [TestMethod()]
+        [DataSource("MyExcelDataSource")]
+        [DeploymentItem("TestDLL.Tests\\DataDrivenSource.xlsx")]
         [ExpectedException(typeof(ArgumentException))]
         public void SerializeObj_FileIncorrent_Test()
         {
-            string indata = ">>>.dat";                        //TODO Data Import
+            string indata = TestContext.DataRow["IncorrectFilename"].ToString();
             int tmp = 0;
             var instance = new Test<int>();
             instance.Set(tmp);
@@ -125,11 +142,13 @@ namespace TestDLL.Tests
         }
 
         //DeserializeObj
-        [ExpectedException(typeof(ArgumentException))]
         [TestMethod()]
+        [DataSource("MyExcelDataSource")]
+        [DeploymentItem("TestDLL.Tests\\DataDrivenSource.xlsx")]
+        [ExpectedException(typeof(ArgumentException))]
         public void DeserializeObj_FileIncorrent_Test()
         {
-            string indata = ">>>.dat";                        //TODO Data Import
+            string indata = TestContext.DataRow["IncorrectFilename"].ToString();
             int tmp = 0;
             var instance = new Test<int>();
             instance.Set(tmp);
